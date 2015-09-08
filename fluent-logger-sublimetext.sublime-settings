@@ -1,0 +1,8 @@
+// fluent-logger-sublimetext default settings
+// Use this as a reference when editing your local user settings.
+
+{
+    "tagprefix": "sublime",
+    "host": "localhost",
+    "port": 24224
+}
