@@ -1,0 +1,30 @@
+[
+    {
+        "id": "preferences",
+        "children":
+        [
+            {
+                "id": "package-settings",
+                "children":
+                [
+                    {
+                        "caption": "fluent-logger-sublimetext",
+                        "children":
+                        [
+                            {
+                                "command": "open_file",
+                                "args": { "file": "${packages}/fluent-logger-sublimetext/fluent-logger-sublimetext.sublime-settings" },
+                                "caption": "Settings - Default"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": { "file": "${packages}/User/fluent-logger-sublimetext.sublime-settings" },
+                                "caption": "Settings - User"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
