@@ -1,4 +1,4 @@
-# fluent-logger-sublimetext
+# fluent-logger-sublimetext ![ST3](https://img.shields.io/badge/Sublime%20Text-build 3083-blue.svg)
 
 fluentd logging tool for sublime text editor
 
