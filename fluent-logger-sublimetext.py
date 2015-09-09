@@ -20,6 +20,14 @@ class FluentLoggerSublimetext(sublime_plugin.EventListener):
         super().__init__(*args, **kwargs)
 
         self.settings = sublime.load_settings(SETTINGS_FILE)
+        self.op_dict = {
+            sublime.OP_EQUAL: 'OP_EQUAL',
+            sublime.OP_NOT_EQUAL: 'OP_NOT_EQUAL',
+            sublime.OP_REGEX_MATCH: 'OP_REGEX_MATCH',
+            sublime.OP_NOT_REGEX_MATCH: 'OP_NOT_REGEX_MATCH',
+            sublime.OP_REGEX_CONTAINS: 'OP_REGEX_CONTAINS',
+            sublime.OP_NOT_REGEX_CONTAINS: 'OP_NOT_REGEX_CONTAINS'
+        }
         sender.setup(
             str(self.settings.get('tagprefix')),
             host=str(self.settings.get('host')),
@@ -111,7 +119,7 @@ class FluentLoggerSublimetext(sublime_plugin.EventListener):
     def on_query_context(self, view, key, operator, operand, match_all):
         data = self._get_data_from_view(view)
         data['key'] = key
-        data['operator'] = operator
+        data['operator'] = self.op_dict[operator]
         data['operand'] = operand
         data['match_all'] = match_all
         event.Event('on_query_context', data)
