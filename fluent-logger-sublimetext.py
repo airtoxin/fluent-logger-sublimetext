@@ -42,9 +42,7 @@ class FluentLoggerSublimetext(sublime_plugin.EventListener):
             "encoding": view.encoding(),
             "line_endings": view.line_endings(),
             "overwrite_status": view.overwrite_status(),
-            "syntax": view.settings().get('syntax'),
-            "project": window.project_data() if hasattr(window, 'project_data') else None,
-            "folders": window.folders()
+            "syntax": view.settings().get('syntax')
         }
 
     def on_new(self, view):
