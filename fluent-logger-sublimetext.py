@@ -6,7 +6,7 @@ import sublime_plugin
 
 import os
 import sys
-from types import MethodType
+from time import time
 
 PLUGIN_DIR = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, os.path.join(PLUGIN_DIR, 'libs'))
@@ -75,10 +75,15 @@ class FluentLoggerSublimetext(sublime_plugin.EventListener):
         event.Event('on_selection_modified', self._get_data_from_view(view))
 
     def on_activated(self, view):
+        self.active_from = time()
         event.Event('on_activated', self._get_data_from_view(view))
 
     def on_deactivated(self, view):
-        event.Event('on_deactivated', self._get_data_from_view(view))
+        data = self._get_data_from_view(view)
+        active_time = time() - self.active_from
+        data['active_time'] = active_time
+        self.active_from = None
+        event.Event('on_deactivated', data)
 
     def on_text_command(self, view, command_name, args):
         data = self._get_data_from_view(view)
