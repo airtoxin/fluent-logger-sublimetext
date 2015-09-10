@@ -4,5 +4,40 @@
 {
     "tagprefix": "sublime",
     "host": "localhost",
-    "port": 24224
+    "port": 24224,
+    "activated_events": {
+        "on_new": true,
+        "on_clone": true,
+        "on_load": true,
+        "on_pre_close": true,
+        "on_close": true,
+        "on_pre_save": true,
+        "on_post_save": true,
+        "on_modified": true,
+        "on_selection_modified": true,
+        "on_activated": true,
+        "on_deactivated": true,
+        "on_text_command": true,
+        "on_window_command": true,
+        "post_text_command": true,
+        "post_window_command": true,
+        "on_query_context": true,
+        "on_query_completions": true
+    },
+    "activated_data": {
+        "version": true,
+        "platform": true,
+        "arch": true,
+        "file_name": true,
+        "size": true,
+        "viewport_extent": true,
+        "layout_extent": true,
+        "line_height": true,
+        "em_width": true,
+        "change_count": true,
+        "encoding": true,
+        "line_endings": true,
+        "overwrite_status": true,
+        "syntax": true
+    }
 }
