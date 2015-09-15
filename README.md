@@ -6,7 +6,7 @@ fluentd logging tool for sublime text editor
 
 You can install from [Package Control](https://sublime.wbond.net/).
 
-__Package Control: Install Package__ > Select __fluent-logger-sublimetext__
+__Package Control: Install Package__ > Select __fluent-logger__
 
 ## Settings
 

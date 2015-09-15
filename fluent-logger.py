@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.join(PLUGIN_DIR, 'libs'))
 
 from fluent import sender, event
 
-SETTINGS_FILE = 'fluent-logger-sublimetext.sublime-settings'
+SETTINGS_FILE = 'fluent-logger.sublime-settings'
 
 class FluentLoggerSublimetext(sublime_plugin.EventListener):
     def __init__(self, *args, **kwargs):
