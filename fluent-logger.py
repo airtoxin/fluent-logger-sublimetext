@@ -14,29 +14,19 @@ sys.path.insert(0, os.path.join(PLUGIN_DIR, 'libs'))
 from fluent import sender, event
 
 SETTINGS_FILE = 'fluent-logger.sublime-settings'
+OP_DICT = {
+    sublime.OP_EQUAL: 'OP_EQUAL',
+    sublime.OP_NOT_EQUAL: 'OP_NOT_EQUAL',
+    sublime.OP_REGEX_MATCH: 'OP_REGEX_MATCH',
+    sublime.OP_NOT_REGEX_MATCH: 'OP_NOT_REGEX_MATCH',
+    sublime.OP_REGEX_CONTAINS: 'OP_REGEX_CONTAINS',
+    sublime.OP_NOT_REGEX_CONTAINS: 'OP_NOT_REGEX_CONTAINS'
+}
 
 class FluentLoggerSublimetext(sublime_plugin.EventListener):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.settings = sublime.load_settings(SETTINGS_FILE)
-        self.op_dict = {
-            sublime.OP_EQUAL: 'OP_EQUAL',
-            sublime.OP_NOT_EQUAL: 'OP_NOT_EQUAL',
-            sublime.OP_REGEX_MATCH: 'OP_REGEX_MATCH',
-            sublime.OP_NOT_REGEX_MATCH: 'OP_NOT_REGEX_MATCH',
-            sublime.OP_REGEX_CONTAINS: 'OP_REGEX_CONTAINS',
-            sublime.OP_NOT_REGEX_CONTAINS: 'OP_NOT_REGEX_CONTAINS'
-        }
-        sender.setup(
-            str(self.settings.get('tagprefix')),
-            host=str(self.settings.get('host')),
-            port=int(self.settings.get('port'))
-        )
-
     def _get_data_from_view(self, view):
         window = view.window()
-        activated = self.settings.get('activated_data')
+        activated = SETTINGS.get('activated_data')
         data = {}
 
         if activated["version"]: data["version"] = sublime.version()
@@ -57,45 +47,45 @@ class FluentLoggerSublimetext(sublime_plugin.EventListener):
         return data
 
     def on_new(self, view):
-        if not self.settings.get('activated_events')['on_new']: return
+        if not SETTINGS.get('activated_events')['on_new']: return
         event.Event('on_new', self._get_data_from_view(view))
 
     def on_clone(self, view):
-        if not self.settings.get('activated_events')['on_clone']: return
+        if not SETTINGS.get('activated_events')['on_clone']: return
         event.Event('on_clone', self._get_data_from_view(view))
 
     def on_load(self, view):
-        if not self.settings.get('activated_events')['on_load']: return
+        if not SETTINGS.get('activated_events')['on_load']: return
         event.Event('on_load', self._get_data_from_view(view))
 
     def on_pre_close(self, view):
-        if not self.settings.get('activated_events')['on_pre_close']: return
+        if not SETTINGS.get('activated_events')['on_pre_close']: return
         event.Event('on_pre_close', self._get_data_from_view(view))
 
     def on_close(self, view):
-        if not self.settings.get('activated_events')['on_close']: return
+        if not SETTINGS.get('activated_events')['on_close']: return
         event.Event('on_close', self._get_data_from_view(view))
 
     def on_pre_save(self, view):
-        if not self.settings.get('activated_events')['on_pre_save']: return
+        if not SETTINGS.get('activated_events')['on_pre_save']: return
         event.Event('on_pre_save', self._get_data_from_view(view))
 
     def on_post_save(self, view):
-        if not self.settings.get('activated_events')['on_post_save']: return
+        if not SETTINGS.get('activated_events')['on_post_save']: return
         event.Event('on_post_save', self._get_data_from_view(view))
 
     def on_modified(self, view):
-        if not self.settings.get('activated_events')['on_modified']: return
+        if not SETTINGS.get('activated_events')['on_modified']: return
         event.Event('on_modified', self._get_data_from_view(view))
 
     def on_selection_modified(self, view):
-        if not self.settings.get('activated_events')['on_selection_modified']: return
+        if not SETTINGS.get('activated_events')['on_selection_modified']: return
         event.Event('on_selection_modified', self._get_data_from_view(view))
 
     def on_activated(self, view):
         self.active_from = time()
 
-        if not self.settings.get('activated_events')['on_activated']: return
+        if not SETTINGS.get('activated_events')['on_activated']: return
         event.Event('on_activated', self._get_data_from_view(view))
 
     def on_deactivated(self, view):
@@ -104,18 +94,18 @@ class FluentLoggerSublimetext(sublime_plugin.EventListener):
         data['active_time'] = active_time
         self.active_from = None
 
-        if not self.settings.get('activated_events')['on_deactivated']: return
+        if not SETTINGS.get('activated_events')['on_deactivated']: return
         event.Event('on_deactivated', data)
 
     def on_text_command(self, view, command_name, args):
-        if not self.settings.get('activated_events')['on_text_command']: return
+        if not SETTINGS.get('activated_events')['on_text_command']: return
         data = self._get_data_from_view(view)
         data['command_name'] = command_name
         data['args'] = args
         event.Event('on_text_command', data)
 
     def on_window_command(self, window, command_name, args):
-        if not self.settings.get('activated_events')['on_window_command']: return
+        if not SETTINGS.get('activated_events')['on_window_command']: return
         view = window.active_view()
         data = self._get_data_from_view(view)
         data['command_name'] = command_name
@@ -123,31 +113,40 @@ class FluentLoggerSublimetext(sublime_plugin.EventListener):
         event.Event('on_window_command', data)
 
     def post_text_command(self, view, command_name, args):
-        if not self.settings.get('activated_events')['post_text_command']: return
+        if not SETTINGS.get('activated_events')['post_text_command']: return
         data = self._get_data_from_view(view)
         data['command_name'] = command_name
         data['args'] = args
         event.Event('post_text_command', data)
 
     def post_window_command(self, window, command_name, args):
-        if not self.settings.get('activated_events')['post_window_command']: return
+        if not SETTINGS.get('activated_events')['post_window_command']: return
         data = self._get_data_from_view(view)
         data['command_name'] = command_name
         data['args'] = args
         event.Event('post_window_command', data)
 
     def on_query_context(self, view, key, operator, operand, match_all):
-        if not self.settings.get('activated_events')['on_query_context']: return
+        if not SETTINGS.get('activated_events')['on_query_context']: return
         data = self._get_data_from_view(view)
         data['key'] = key
-        data['operator'] = self.op_dict[operator]
+        data['operator'] = OP_DICT[operator]
         data['operand'] = operand
         data['match_all'] = match_all
         event.Event('on_query_context', data)
 
     def on_query_completions(self, view, prefix, locations):
-        if not self.settings.get('activated_events')['on_query_completions']: return
+        if not SETTINGS.get('activated_events')['on_query_completions']: return
         data = self._get_data_from_view(view)
         data['prefix'] = prefix
         data['locations'] = locations
         event.Event('on_query_completions', data)
+
+def plugin_loaded():
+    global SETTINGS
+    SETTINGS = sublime.load_settings(SETTINGS_FILE)
+    sender.setup(
+        str(SETTINGS.get('tagprefix')),
+        host=str(SETTINGS.get('host')),
+        port=int(SETTINGS.get('port'))
+    )
